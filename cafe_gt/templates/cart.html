@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepetim</title>
+    <!-- Link to CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>🛒 Sepetim</h1>
+        <nav>
+            <!-- Navigation links -->
+            <a href="/">Ana Sayfa</a>
+            <a href="/cart.html">Sepetim 🛒</a>
+            <a href="/checkout.html">Ödeme</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Sepetinizdeki Ürünler</h2>
+        <!-- Cart items will be injected here -->
+        <ul id="cart-items"></ul>
+        <!-- Total price will be displayed here -->
+        <div id="cart-total"></div>
+        <a href="/checkout.html" class="checkout-btn">Ödeme Sayfasına Git</a>
+    </main>
+
+    <footer>
+        <p>© 2025 Kahve Dünyası</p>
+    </footer>
+
+    <script>
+        // Function to load cart items from localStorage
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalContainer = document.getElementById('cart-total');
+            let total = 0;
+
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Sepetinizde ürün bulunmamaktadır.</p>';
+                cartTotalContainer.innerHTML = '';
+            } else {
+                cart.forEach(item => {
+                    // Create list item for each cart product
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name} - ${item.price} TL`;
+                    cartItemsContainer.appendChild(li);
+                    total += item.price;
+                });
+                // Display total price
+                cartTotalContainer.innerHTML = `<h3>Toplam: ${total} TL</h3>`;
+            }
+        }
+
+        // Load cart when page is fully loaded
+        document.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>

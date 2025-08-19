@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahve Dünyası</title>
+    <!-- Link to CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Link to JS file -->
+    <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>☕ Kahve Dünyası</h1>
+        <nav>
+            <!-- Navigation links -->
+            <a href="/">Ana Sayfa</a>
+            <a href="/cart.html">Sepetim 🛒</a>
+            <a href="/checkout.html">Ödeme</a>
+            
+            {% if current_user.is_authenticated %}
+                <!-- Admin links visible only to logged-in users -->
+                <a href="/admin">Yönetici Paneli</a>
+                <a href="/logout">Çıkış Yap</a>
+            {% else %}
+                <a href="/login">Giriş Yap</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Product showcase section with scrolling images -->
+    <section class="scrolling-images">
+        <div class="image-container">
+            {% for product in products %}
+            <div class="item">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                <div class="item-info">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.price }} TL</p>
+                </div>
+                <!-- Add product to cart button -->
+                <button class="add-to-cart-btn" onclick="addToCart('{{ product.name }}', {{ product.price }})">Sepete Ekle</button>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Virtual Barista Chatbot -->
+    <button id="barista-btn">☕ Sanal Barista</button>
+    <div id="chatbot" class="hidden">
+        <div id="chatbox"></div>
+        <input type="text" id="chat-input" placeholder="Mesajınızı yazın...">
+        <button onclick="sendMessage()">Gönder</button>
+    </div>
+
+    <footer>
+        <p>© 2025 Kahve Dünyası</p>
+    </footer>
+</body>
+</html>

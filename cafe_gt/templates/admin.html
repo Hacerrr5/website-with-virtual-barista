@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Paneli</title>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Yönetici Paneli</h1>
+        </div>
+        <nav>
+            <!-- Navigation links -->
+            <a href="{{ url_for('home') }}">Ana Sayfa</a>
+            <a href="{{ url_for('logout') }}">Çıkış Yap</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Hoş Geldiniz, Yönetici!</h2>
+        
+        <!-- Flash messages display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <hr>
+
+        <!-- Orders Section -->
+        <section>
+            <h3>Siparişler</h3>
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order-card">
+                        <p><strong>Sipariş No:</strong> {{ order.id }}</p>
+                        <p><strong>Müşteri Adı:</strong> {{ order.customer_name }}</p>
+                        <p><strong>E-posta:</strong> {{ order.customer_email }}</p>
+                        <p><strong>Adres:</strong> {{ order.delivery_address }}</p>
+                        <p><strong>Sipariş Detayları:</strong></p>
+                        <ul>
+                            {% for item in order.order_details_parsed %}
+                                <li>{{ item.name }} x{{ item.quantity }} - {{ item.price * item.quantity }} TL</li>
+                            {% endfor %}
+                        </ul>
+                        <p><strong>Toplam Tutar:</strong> {{ order.total_price }} TL</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Henüz bir sipariş yok.</p>
+            {% endif %}
+        </section>
+        
+        <hr>
+
+        <!-- Add New Product Section -->
+        <section>
+            <h3>Yeni Ürün Ekle</h3>
+            <form action="{{ url_for('add_product') }}" method="POST">
+                <div class="form-group">
+                    <label for="name">Ürün Adı:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Fiyat:</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="image_url">Resim URL'si:</label>
+                    <input type="url" id="image_url" name="image_url" required>
+                </div>
+                <button type="submit" class="submit-btn">Ürünü Ekle</button>
+            </form>
+        </section>
+
+        <hr>
+
+        <!-- Existing Products Section -->
+        <section>
+            <h3>Mevcut Ürünler</h3>
+            {% if products %}
+                <ul class="product-list">
+                    {% for product in products %}
+                    <li>
+                        <span>{{ product.name }} - {{ product.price }} TL</span>
+                        <!-- Delete button for product -->
+                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="delete-btn" onclick="return confirm('Bu ürünü silmek istediğinizden emin misiniz?');">Sil</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Henüz eklenmiş bir ürün yok.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Kahve Dükkanı. Yönetici Paneli.</p>
+    </footer>
+</body>
+</html>

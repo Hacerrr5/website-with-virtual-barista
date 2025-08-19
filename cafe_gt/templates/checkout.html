@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme</title>
+    <!-- Link to CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Kahve Dükkanı</h1>
+        </div>
+        <nav>
+            <!-- Navigation links -->
+            <a href="{{ url_for('home') }}">Ana Sayfa</a>
+            <a href="{{ url_for('cart_page') }}">Sepet</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="checkout-form-container">
+            <h2>Ödeme Sayfası</h2>
+            
+            <!-- Cart summary section -->
+            <div id="cart-summary">
+                <h3>Sepet Özeti</h3>
+                <ul id="cart-items">
+                </ul>
+                <p id="cart-total"></p>
+            </div>
+            
+            <!-- Checkout form -->
+            <form id="checkout-form">
+                <h3>Müşteri Bilgileri</h3>
+                <div class="form-group">
+                    <label for="customer-name">Ad Soyad</label>
+                    <input type="text" id="customer-name" name="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-email">E-posta</label>
+                    <input type="email" id="customer-email" name="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="delivery-address">Adres</label>
+                    <textarea id="delivery-address" name="deliveryAddress" required></textarea>
+                </div>
+                <button type="submit" class="checkout-btn">Siparişi Tamamla</button>
+            </form>
+            
+            <!-- Message displayed after checkout -->
+            <p id="checkout-message"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Kahve Dükkanı. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <!-- Link to external JS file -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
